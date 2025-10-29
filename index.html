@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Findexly - умный поиск</title>
+    <title>Findexly - умный поиск нового поколения</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
@@ -20,12 +20,15 @@
             --bg-card: #1e1e2d;
             --accent-primary: #00d4ff;
             --accent-secondary: #6c63ff;
+            --accent-tertiary: #ff6b6b;
             --text-primary: #ffffff;
             --text-secondary: #b8b8d0;
             --text-muted: #8c8ca1;
             --border: #2a2a3a;
             --shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+            --shadow-glow: 0 0 20px rgba(0, 212, 255, 0.3);
             --gradient: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+            --gradient-dark: linear-gradient(135deg, var(--accent-secondary), #4a44b5);
         }
 
         body {
@@ -43,10 +46,46 @@
             width: 100%;
             height: 100%;
             background: 
-                radial-gradient(circle at 20% 80%, rgba(108, 99, 255, 0.1) 0%, transparent 50%),
-                radial-gradient(circle at 80% 20%, rgba(0, 212, 255, 0.08) 0%, transparent 50%),
-                radial-gradient(circle at 40% 40%, rgba(108, 99, 255, 0.05) 0%, transparent 50%);
+                radial-gradient(circle at 20% 80%, rgba(108, 99, 255, 0.15) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(0, 212, 255, 0.12) 0%, transparent 50%),
+                radial-gradient(circle at 40% 40%, rgba(108, 99, 255, 0.08) 0%, transparent 50%);
             z-index: -1;
+        }
+
+        .particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            pointer-events: none;
+        }
+
+        .particle {
+            position: absolute;
+            background: var(--accent-primary);
+            border-radius: 50%;
+            opacity: 0.3;
+            animation: float 15s infinite linear;
+        }
+
+        @keyframes float {
+            0% {
+                transform: translateY(0) translateX(0);
+            }
+            25% {
+                transform: translateY(-20px) translateX(10px);
+            }
+            50% {
+                transform: translateY(-40px) translateX(0);
+            }
+            75% {
+                transform: translateY(-20px) translateX(-10px);
+            }
+            100% {
+                transform: translateY(0) translateX(0);
+            }
         }
 
         .browser-promo {
@@ -57,6 +96,7 @@
             font-weight: 600;
             font-size: 14px;
             position: relative;
+            box-shadow: var(--shadow);
         }
 
         .browser-promo .close {
@@ -70,6 +110,7 @@
             font-size: 18px;
             cursor: pointer;
             opacity: 0.8;
+            transition: opacity 0.3s;
         }
 
         .browser-promo .close:hover {
@@ -106,6 +147,11 @@
             align-items: center;
             justify-content: center;
             box-shadow: var(--shadow);
+            transition: transform 0.3s;
+        }
+
+        .logo:hover .logo-icon {
+            transform: rotate(15deg);
         }
 
         .logo-text {
@@ -152,6 +198,32 @@
             width: 100%;
         }
 
+        .nav-actions {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+        }
+
+        .theme-toggle, .voice-search-btn {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border);
+            color: var(--text-secondary);
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .theme-toggle:hover, .voice-search-btn:hover {
+            background: var(--accent-primary);
+            color: var(--text-primary);
+            transform: translateY(-2px);
+        }
+
         .hero {
             text-align: center;
             padding: 80px 0 60px;
@@ -164,10 +236,23 @@
             font-weight: 700;
             margin-bottom: 24px;
             line-height: 1.2;
-            background: linear-gradient(135deg, var(--text-primary) 0%, var(--text-secondary) 100%);
+            background: linear-gradient(135deg, var(--accent-primary) 0%, var(--accent-secondary) 50%, var(--accent-tertiary) 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
+            position: relative;
+        }
+
+        .hero h1::after {
+            content: '2025';
+            position: absolute;
+            top: -10px;
+            right: -30px;
+            font-size: 1rem;
+            background: var(--gradient);
+            padding: 2px 8px;
+            border-radius: 10px;
+            color: white;
         }
 
         .hero p {
@@ -185,7 +270,7 @@
 
         .search-box {
             width: 100%;
-            padding: 20px 24px;
+            padding: 20px 60px 20px 24px;
             font-size: 1.1rem;
             border: 2px solid var(--border);
             border-radius: 16px;
@@ -202,7 +287,7 @@
 
         .search-box:focus {
             border-color: var(--accent-primary);
-            box-shadow: 0 12px 40px rgba(0, 212, 255, 0.2);
+            box-shadow: 0 12px 40px rgba(0, 212, 255, 0.2), var(--shadow-glow);
             transform: translateY(-2px);
         }
 
@@ -227,6 +312,23 @@
 
         .search-btn:hover {
             transform: translateY(-50%) scale(1.05);
+            box-shadow: var(--shadow-glow);
+        }
+
+        .voice-indicator {
+            position: absolute;
+            left: 24px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--accent-primary);
+            display: none;
+            animation: pulse 1.5s infinite;
+        }
+
+        @keyframes pulse {
+            0% { opacity: 0.4; }
+            50% { opacity: 1; }
+            100% { opacity: 0.4; }
         }
 
         .quick-actions {
@@ -282,6 +384,24 @@
             margin-bottom: 1rem;
             border: 1px solid var(--border);
             transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .result-item::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 4px;
+            height: 100%;
+            background: var(--gradient);
+            transform: scaleY(0);
+            transition: transform 0.3s;
+        }
+
+        .result-item:hover::before {
+            transform: scaleY(1);
         }
 
         .result-item:hover {
@@ -312,6 +432,28 @@
         .result-description {
             color: var(--text-secondary);
             line-height: 1.5;
+        }
+
+        .result-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        .result-action {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border);
+            color: var(--text-secondary);
+            padding: 4px 8px;
+            border-radius: 6px;
+            font-size: 12px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .result-action:hover {
+            background: var(--accent-primary);
+            color: var(--text-primary);
         }
 
         .external-search {
@@ -364,6 +506,24 @@
             box-shadow: var(--shadow);
             border: 1px solid var(--border);
             transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .widget::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: var(--gradient);
+            transform: scaleX(0);
+            transition: transform 0.3s;
+        }
+
+        .widget:hover::before {
+            transform: scaleX(1);
         }
 
         .widget:hover {
@@ -416,6 +576,14 @@
             color: var(--text-primary);
             font-weight: 600;
             font-size: 16px;
+        }
+
+        .trend-up {
+            color: #4ade80;
+        }
+
+        .trend-down {
+            color: #f87171;
         }
 
         .loading {
@@ -513,6 +681,18 @@
             padding: 10px 15px;
             border-radius: 10px;
             max-width: 80%;
+            animation: messageAppear 0.3s ease;
+        }
+
+        @keyframes messageAppear {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
         .user-message {
@@ -550,6 +730,24 @@
             padding: 30px;
             border: 1px solid var(--border);
             transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .about-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: var(--gradient);
+            transform: scaleX(0);
+            transition: transform 0.3s;
+        }
+
+        .about-card:hover::before {
+            transform: scaleX(1);
         }
 
         .about-card:hover {
@@ -576,6 +774,57 @@
             color: var(--text-primary);
         }
 
+        .creator-section {
+            text-align: center;
+            padding: 40px 0;
+            border-top: 1px solid var(--border);
+            margin-top: 40px;
+        }
+
+        .creator-info {
+            display: inline-flex;
+            align-items: center;
+            gap: 15px;
+            background: var(--bg-card);
+            padding: 15px 25px;
+            border-radius: 15px;
+            border: 1px solid var(--border);
+        }
+
+        .creator-avatar {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: var(--gradient);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            color: white;
+        }
+
+        .creator-details h4 {
+            color: var(--text-primary);
+            margin-bottom: 5px;
+        }
+
+        .creator-details p {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        .feature-badge {
+            display: inline-block;
+            background: var(--gradient);
+            color: white;
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            margin-left: 10px;
+            vertical-align: middle;
+        }
+
         @media (max-width: 768px) {
             .navbar {
                 flex-direction: column;
@@ -596,7 +845,7 @@
             }
 
             .search-box {
-                padding: 16px 20px;
+                padding: 16px 50px 16px 20px;
             }
 
             .widgets-grid {
@@ -610,6 +859,10 @@
             .external-links {
                 flex-direction: column;
                 align-items: center;
+            }
+
+            .nav-actions {
+                margin-top: 15px;
             }
         }
 
@@ -627,6 +880,30 @@
         .animate-fade-in {
             animation: fadeInUp 0.6s ease forwards;
         }
+
+        /* Dark/Light theme */
+        body.light-theme {
+            --bg-primary: #f5f7fa;
+            --bg-secondary: #ffffff;
+            --bg-card: #ffffff;
+            --text-primary: #2d3748;
+            --text-secondary: #4a5568;
+            --text-muted: #718096;
+            --border: #e2e8f0;
+            --shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+        }
+
+        .theme-toggle .fa-sun {
+            display: none;
+        }
+
+        .light-theme .theme-toggle .fa-sun {
+            display: block;
+        }
+
+        .light-theme .theme-toggle .fa-moon {
+            display: none;
+        }
     </style>
 </head>
 <body>
@@ -636,6 +913,7 @@
     </div>
 
     <div class="background-overlay"></div>
+    <div class="particles" id="particles"></div>
     
     <div class="container">
         <nav class="navbar">
@@ -653,15 +931,28 @@
                 <a href="https://yandex.ru/maps" class="nav-link" target="_blank">Карты</a>
                 <a href="#ai" class="nav-link">AI Помощник</a>
             </div>
+
+            <div class="nav-actions">
+                <button class="voice-search-btn" id="voiceSearchBtn" title="Голосовой поиск">
+                    <i class="fas fa-microphone"></i>
+                </button>
+                <button class="theme-toggle" id="themeToggle" title="Сменить тему">
+                    <i class="fas fa-moon"></i>
+                    <i class="fas fa-sun"></i>
+                </button>
+            </div>
         </nav>
 
         <section class="hero" id="search">
             <h1 class="animate-fade-in">Findexly</h1>
-            <p class="animate-fade-in">Умный поиск нового поколения</p>
+            <p class="animate-fade-in">Умный поиск нового поколения <span class="feature-badge">2025</span></p>
             
             <div class="search-container animate-fade-in">
+                <div class="voice-indicator" id="voiceIndicator">
+                    <i class="fas fa-microphone"></i> Слушаю...
+                </div>
                 <form id="search-form">
-                    <input type="text" class="search-box" id="search-input" placeholder="Введите запрос..." autocomplete="off" required>
+                    <input type="text" class="search-box" id="search-input" placeholder="Введите запрос или скажите команду..." autocomplete="off" required>
                     <button type="submit" class="search-btn">
                         <i class="fas fa-search"></i>
                     </button>
@@ -674,6 +965,7 @@
                 <button class="quick-btn" data-query="новости">Новости</button>
                 <button class="quick-btn" data-query="спорт">Спорт</button>
                 <button class="quick-btn" data-query="кино">Кино</button>
+                <button class="quick-btn" data-query="findexly создатель">О создателе</button>
             </div>
 
             <div class="results-section" id="results-section">
@@ -707,15 +999,15 @@
                     </div>
                     <div class="currency-item">
                         <span class="currency-name">USD / RUB</span>
-                        <span class="currency-value">79,82 ₽</span>
+                        <span class="currency-value">79,82 ₽ <span class="trend-up">↑0.5%</span></span>
                     </div>
                     <div class="currency-item">
                         <span class="currency-name">EUR / RUB</span>
-                        <span class="currency-value">92,94 ₽</span>
+                        <span class="currency-value">92,94 ₽ <span class="trend-down">↓0.3%</span></span>
                     </div>
                     <div class="currency-item">
                         <span class="currency-name">CNY / RUB</span>
-                        <span class="currency-value">11,23 ₽</span>
+                        <span class="currency-value">11,23 ₽ <span class="trend-up">↑1.2%</span></span>
                     </div>
                 </div>
 
@@ -728,15 +1020,36 @@
                     </div>
                     <div class="currency-item">
                         <span class="currency-name">Москва</span>
-                        <span class="currency-value">+5°C</span>
+                        <span class="currency-value">+5°C <i class="fas fa-cloud"></i></span>
                     </div>
                     <div class="currency-item">
                         <span class="currency-name">Санкт-Петербург</span>
-                        <span class="currency-value">+3°C</span>
+                        <span class="currency-value">+3°C <i class="fas fa-cloud-rain"></i></span>
                     </div>
                     <div class="currency-item">
                         <span class="currency-name">Сочи</span>
-                        <span class="currency-value">+15°C</span>
+                        <span class="currency-value">+15°C <i class="fas fa-sun"></i></span>
+                    </div>
+                </div>
+
+                <div class="widget animate-fade-in">
+                    <div class="widget-header">
+                        <div class="widget-icon">
+                            <i class="fas fa-bolt"></i>
+                        </div>
+                        <h3 class="widget-title">Быстрый доступ</h3>
+                    </div>
+                    <div class="currency-item">
+                        <span class="currency-name">Популярные запросы</span>
+                        <span class="currency-value"><i class="fas fa-fire"></i></span>
+                    </div>
+                    <div class="currency-item">
+                        <span class="currency-name">История поиска</span>
+                        <span class="currency-value"><i class="fas fa-history"></i></span>
+                    </div>
+                    <div class="currency-item">
+                        <span class="currency-name">Избранное</span>
+                        <span class="currency-value"><i class="fas fa-star"></i></span>
                     </div>
                 </div>
             </div>
@@ -777,8 +1090,8 @@
                     </div>
                     
                     <div class="about-card animate-fade-in">
-                        <h3>Технологии</h3>
-                        <p>Используем передовые алгоритмы машинного обучения и нейросети для понимания контекста запросов и предоставления точных ответов.</p>
+                        <h3>Технологии 2025</h3>
+                        <p>Используем передовые алгоритмы машинного обучения, нейросети и квантовые вычисления для понимания контекста запросов.</p>
                     </div>
                     
                     <div class="about-card animate-fade-in">
@@ -790,6 +1103,16 @@
                         <h3>Будущее</h3>
                         <p>Работаем над интеграцией голосового поиска, AR-навигации и персонального AI-ассистента для каждого пользователя.</p>
                     </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="creator-section">
+            <div class="creator-info">
+                <div class="creator-avatar">ДЖ</div>
+                <div class="creator-details">
+                    <h4>Даниил Жарков</h4>
+                    <p>Создатель Findexly • 28 октября 2025</p>
                 </div>
             </div>
         </section>
@@ -810,7 +1133,9 @@
             'спасибо': 'Пожалуйста! Обращайтесь ещё, если понадобится помощь.',
             'findexly': 'Findexly - это умный поисковик нового поколения с AI-ассистентом и передовыми технологиями поиска.',
             'поиск': 'Я могу помочь с поиском информации. Просто введите ваш запрос в поисковую строку выше.',
-            'помощь': 'Я могу ответить на вопросы о погоде, курсах валют, новостях, спорте, кино, времени и дате. Также могу рассказать о Findexly.'
+            'помощь': 'Я могу ответить на вопросы о погоде, курсах валют, новостях, спорте, кино, времени и дате. Также могу рассказать о Findexly.',
+            'создатель': 'Findexly создан Даниилом Жарковым 28 октября 2025 года. Это инновационный поисковик нового поколения.',
+            'даниил жарков': 'Даниил Жарков - создатель Findexly, умного поисковика нового поколения, разработанного в 2025 году.'
         };
 
         // Поисковая база данных
@@ -848,10 +1173,134 @@
                 {
                     title: 'О компании Findexly',
                     link: '#',
-                    snippet: 'Инновационный проект в области поисковых технологий. Основан в 2024 году.'
+                    snippet: 'Инновационный проект в области поисковых технологий. Основан в 2025 году Даниилом Жарковым.'
+                }
+            ],
+            'даниил жарков': [
+                {
+                    title: 'Даниил Жарков - создатель Findexly',
+                    link: '#',
+                    snippet: 'Разработчик и создатель поисковой системы Findexly. Проект запущен 28 октября 2025 года.'
+                },
+                {
+                    title: 'Findexly - поиск нового поколения',
+                    link: '#',
+                    snippet: 'Инновационная поисковая система с AI-ассистентом и передовыми технологиями 2025 года.'
                 }
             ]
         };
+
+        // Создание частиц для фона
+        function createParticles() {
+            const particlesContainer = document.getElementById('particles');
+            const particleCount = 30;
+            
+            for (let i = 0; i < particleCount; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                
+                // Случайный размер и позиция
+                const size = Math.random() * 4 + 1;
+                const posX = Math.random() * 100;
+                const posY = Math.random() * 100;
+                const delay = Math.random() * 15;
+                const duration = Math.random() * 10 + 15;
+                
+                particle.style.width = `${size}px`;
+                particle.style.height = `${size}px`;
+                particle.style.left = `${posX}%`;
+                particle.style.top = `${posY}%`;
+                particle.style.animationDelay = `${delay}s`;
+                particle.style.animationDuration = `${duration}s`;
+                
+                // Случайный цвет
+                const colors = ['#00d4ff', '#6c63ff', '#ff6b6b'];
+                const color = colors[Math.floor(Math.random() * colors.length)];
+                particle.style.background = color;
+                
+                particlesContainer.appendChild(particle);
+            }
+        }
+
+        // Голосовой поиск
+        function setupVoiceSearch() {
+            const voiceSearchBtn = document.getElementById('voiceSearchBtn');
+            const voiceIndicator = document.getElementById('voiceIndicator');
+            const searchInput = document.getElementById('search-input');
+            
+            // Проверяем поддержку Web Speech API
+            if (!('webkitSpeechRecognition' in window) && !('SpeechRecognition' in window)) {
+                voiceSearchBtn.style.display = 'none';
+                return;
+            }
+            
+            const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+            const recognition = new SpeechRecognition();
+            
+            recognition.continuous = false;
+            recognition.interimResults = false;
+            recognition.lang = 'ru-RU';
+            
+            voiceSearchBtn.addEventListener('click', () => {
+                if (voiceSearchBtn.classList.contains('listening')) {
+                    recognition.stop();
+                    voiceSearchBtn.classList.remove('listening');
+                    voiceIndicator.style.display = 'none';
+                } else {
+                    recognition.start();
+                    voiceSearchBtn.classList.add('listening');
+                    voiceIndicator.style.display = 'block';
+                }
+            });
+            
+            recognition.onstart = function() {
+                voiceSearchBtn.style.background = 'var(--accent-primary)';
+                voiceSearchBtn.style.color = 'var(--text-primary)';
+            };
+            
+            recognition.onresult = function(event) {
+                const transcript = event.results[0][0].transcript;
+                searchInput.value = transcript;
+                voiceSearchBtn.classList.remove('listening');
+                voiceIndicator.style.display = 'none';
+                voiceSearchBtn.style.background = '';
+                voiceSearchBtn.style.color = '';
+                
+                // Автоматически выполняем поиск
+                performSearch();
+            };
+            
+            recognition.onerror = function(event) {
+                console.error('Speech recognition error', event.error);
+                voiceSearchBtn.classList.remove('listening');
+                voiceIndicator.style.display = 'none';
+                voiceSearchBtn.style.background = '';
+                voiceSearchBtn.style.color = '';
+            };
+            
+            recognition.onend = function() {
+                voiceSearchBtn.classList.remove('listening');
+                voiceIndicator.style.display = 'none';
+                voiceSearchBtn.style.background = '';
+                voiceSearchBtn.style.color = '';
+            };
+        }
+
+        // Переключение темы
+        function setupThemeToggle() {
+            const themeToggle = document.getElementById('themeToggle');
+            const currentTheme = localStorage.getItem('theme') || 'dark';
+            
+            if (currentTheme === 'light') {
+                document.body.classList.add('light-theme');
+            }
+            
+            themeToggle.addEventListener('click', () => {
+                document.body.classList.toggle('light-theme');
+                const theme = document.body.classList.contains('light-theme') ? 'light' : 'dark';
+                localStorage.setItem('theme', theme);
+            });
+        }
 
         // AI Помощник
         function toggleAIChat() {
@@ -1014,6 +1463,10 @@
                             <a href="${result.link}" class="result-title">${result.title}</a>
                             <div class="result-url">findexly.com</div>
                             <div class="result-description">${result.snippet}</div>
+                            <div class="result-actions">
+                                <button class="result-action">Сохранить</button>
+                                <button class="result-action">Поделиться</button>
+                            </div>
                         `;
                         container.appendChild(resultElement);
                     });
@@ -1050,6 +1503,9 @@
         // Инициализация
         document.addEventListener('DOMContentLoaded', function() {
             new FindexlySearch();
+            createParticles();
+            setupVoiceSearch();
+            setupThemeToggle();
             
             const elements = document.querySelectorAll('.animate-fade-in');
             elements.forEach((el, index) => {
