@@ -28,7 +28,9 @@
             --shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
             --shadow-glow: 0 0 20px rgba(0, 212, 255, 0.3);
             --gradient: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
-            --gradient-dark: linear-gradient(135deg, var(--accent-secondary), #4a44b5);
+            --success: #4ade80;
+            --warning: #fbbf24;
+            --error: #f87171;
         }
 
         body {
@@ -64,28 +66,17 @@
 
         .particle {
             position: absolute;
-            background: var(--accent-primary);
             border-radius: 50%;
             opacity: 0.3;
             animation: float 15s infinite linear;
         }
 
         @keyframes float {
-            0% {
-                transform: translateY(0) translateX(0);
-            }
-            25% {
-                transform: translateY(-20px) translateX(10px);
-            }
-            50% {
-                transform: translateY(-40px) translateX(0);
-            }
-            75% {
-                transform: translateY(-20px) translateX(-10px);
-            }
-            100% {
-                transform: translateY(0) translateX(0);
-            }
+            0% { transform: translateY(0) translateX(0); }
+            25% { transform: translateY(-20px) translateX(10px); }
+            50% { transform: translateY(-40px) translateX(0); }
+            75% { transform: translateY(-20px) translateX(-10px); }
+            100% { transform: translateY(0) translateX(0); }
         }
 
         .browser-promo {
@@ -148,10 +139,55 @@
             justify-content: center;
             box-shadow: var(--shadow);
             transition: transform 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .logo-icon::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: 
+                linear-gradient(45deg, 
+                    transparent 0%, 
+                    rgba(255, 255, 255, 0.1) 50%, 
+                    transparent 100%);
+            animation: shine 3s infinite;
+        }
+
+        @keyframes shine {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
+
+        .logo-icon-inner {
+            width: 24px;
+            height: 24px;
+            background: 
+                linear-gradient(135deg, #ffffff 0%, #e0e0ff 100%);
+            border-radius: 6px;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+        }
+
+        .logo-icon-inner::after {
+            content: 'F';
+            font-weight: 800;
+            font-size: 14px;
+            background: linear-gradient(135deg, #6c63ff 0%, #00d4ff 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
         }
 
         .logo:hover .logo-icon {
-            transform: rotate(15deg);
+            transform: rotate(15deg) scale(1.1);
         }
 
         .logo-text {
@@ -331,6 +367,41 @@
             100% { opacity: 0.4; }
         }
 
+        .suggestions {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 0 0 16px 16px;
+            margin-top: -2px;
+            max-height: 200px;
+            overflow-y: auto;
+            display: none;
+            z-index: 1000;
+        }
+
+        .suggestion-item {
+            padding: 12px 20px;
+            cursor: pointer;
+            transition: background 0.2s;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .suggestion-item:last-child {
+            border-bottom: none;
+        }
+
+        .suggestion-item:hover {
+            background: var(--bg-secondary);
+        }
+
+        .suggestion-item.active {
+            background: var(--accent-primary);
+            color: white;
+        }
+
         .quick-actions {
             display: flex;
             gap: 12px;
@@ -423,7 +494,7 @@
         }
 
         .result-url {
-            color: var(--text-secondary);
+            color: var(--success);
             font-size: 0.9rem;
             margin-bottom: 0.5rem;
             display: block;
@@ -485,6 +556,9 @@
             text-decoration: none;
             font-weight: 500;
             transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
         }
 
         .external-link:hover {
@@ -579,11 +653,11 @@
         }
 
         .trend-up {
-            color: #4ade80;
+            color: var(--success);
         }
 
         .trend-down {
-            color: #f87171;
+            color: var(--error);
         }
 
         .loading {
@@ -597,6 +671,15 @@
             color: var(--text-muted);
             padding: 3rem;
             font-size: 1.1rem;
+        }
+
+        .error-message {
+            background: var(--error);
+            color: white;
+            padding: 1rem;
+            border-radius: 8px;
+            margin: 1rem 0;
+            text-align: center;
         }
 
         .ai-section {
@@ -825,7 +908,6 @@
             vertical-align: middle;
         }
 
-        /* Адаптивность для мобильных устройств */
         @media (max-width: 768px) {
             .navbar {
                 flex-direction: column;
@@ -983,7 +1065,6 @@
             animation: fadeInUp 0.6s ease forwards;
         }
 
-        /* Dark/Light theme */
         body.light-theme {
             --bg-primary: #f5f7fa;
             --bg-secondary: #ffffff;
@@ -1021,7 +1102,7 @@
         <nav class="navbar">
             <a href="#" class="logo">
                 <div class="logo-icon">
-                    <i class="fas fa-search"></i>
+                    <div class="logo-icon-inner"></div>
                 </div>
                 <div class="logo-text">Findexly</div>
             </a>
@@ -1054,20 +1135,20 @@
                     <i class="fas fa-microphone"></i> Слушаю...
                 </div>
                 <form id="search-form">
-                    <input type="text" class="search-box" id="search-input" placeholder="Введите запрос или скажите команду..." autocomplete="off" required>
+                    <input type="text" class="search-box" id="search-input" placeholder="Спросите что угодно: погода в Калуге, курс доллара..." autocomplete="off" required>
                     <button type="submit" class="search-btn">
                         <i class="fas fa-search"></i>
                     </button>
                 </form>
+                <div class="suggestions" id="suggestions"></div>
             </div>
 
             <div class="quick-actions">
-                <button class="quick-btn" data-query="погода москва">Погода</button>
+                <button class="quick-btn" data-query="погода в москве">Погода Москва</button>
                 <button class="quick-btn" data-query="курс доллара">Курс валют</button>
-                <button class="quick-btn" data-query="новости">Новости</button>
-                <button class="quick-btn" data-query="когда конец света">Конец света</button>
-                <button class="quick-btn" data-query="смысл жизни">Смысл жизни</button>
-                <button class="quick-btn" data-query="findexly создатель">О создателе</button>
+                <button class="quick-btn" data-query="последние новости">Новости</button>
+                <button class="quick-btn" data-query="сколько времени">Время</button>
+                <button class="quick-btn" data-query="кто создал findexly">О создателе</button>
             </div>
 
             <div class="results-section" id="results-section">
@@ -1087,6 +1168,9 @@
                         <a href="#" class="external-link" id="yandex-search">
                             <i class="fab fa-yandex"></i> Поиск в Яндекс
                         </a>
+                        <a href="#" class="external-link" id="duckduckgo-search">
+                            <i class="fas fa-search"></i> Поиск в DuckDuckGo
+                        </a>
                     </div>
                 </div>
             </div>
@@ -1101,15 +1185,15 @@
                     </div>
                     <div class="currency-item">
                         <span class="currency-name">USD / RUB</span>
-                        <span class="currency-value">79,82 ₽ <span class="trend-up">↑0.5%</span></span>
+                        <span class="currency-value">95,42 ₽ <span class="trend-up">↑1.2%</span></span>
                     </div>
                     <div class="currency-item">
                         <span class="currency-name">EUR / RUB</span>
-                        <span class="currency-value">92,94 ₽ <span class="trend-down">↓0.3%</span></span>
+                        <span class="currency-value">102,15 ₽ <span class="trend-down">↓0.3%</span></span>
                     </div>
                     <div class="currency-item">
                         <span class="currency-name">CNY / RUB</span>
-                        <span class="currency-value">11,23 ₽ <span class="trend-up">↑1.2%</span></span>
+                        <span class="currency-value">13,27 ₽ <span class="trend-up">↑0.8%</span></span>
                     </div>
                 </div>
 
@@ -1122,15 +1206,15 @@
                     </div>
                     <div class="currency-item">
                         <span class="currency-name">Москва</span>
-                        <span class="currency-value">+5°C <i class="fas fa-cloud"></i></span>
+                        <span class="currency-value">+3°C <i class="fas fa-cloud"></i></span>
                     </div>
                     <div class="currency-item">
                         <span class="currency-name">Нью-Йорк</span>
-                        <span class="currency-value">+18°C <i class="fas fa-sun"></i></span>
+                        <span class="currency-value">+15°C <i class="fas fa-sun"></i></span>
                     </div>
                     <div class="currency-item">
                         <span class="currency-name">Токио</span>
-                        <span class="currency-value">+12°C <i class="fas fa-cloud-rain"></i></span>
+                        <span class="currency-value">+10°C <i class="fas fa-cloud-rain"></i></span>
                     </div>
                 </div>
 
@@ -1187,13 +1271,13 @@
                 <h2 class="section-title">О Findexly</h2>
                 <div class="about-grid">
                     <div class="about-card animate-fade-in">
-                        <h3>Наша миссия</h3>
-                        <p>Создать самый умный и удобный поисковик, который понимает пользователей и предоставляет релевантные результаты мгновенно.</p>
+                        <h3>Умный поиск</h3>
+                        <p>Понимает естественный язык - пишите "погода в Калуге", а не "погода калуга". ИИ анализирует контекст и intent запроса.</p>
                     </div>
                     
                     <div class="about-card animate-fade-in">
                         <h3>Технологии 2025</h3>
-                        <p>Используем передовые алгоритмы машинного обучения, нейросети и квантовые вычисления для понимания контекста запросов.</p>
+                        <p>Используем NLP, машинное обучение и семантический анализ для понимания смысла запросов на естественном языке.</p>
                     </div>
                     
                     <div class="about-card animate-fade-in">
@@ -1221,239 +1305,882 @@
     </div>
 
     <script>
-        // Расширенная база знаний AI
-        const aiKnowledgeBase = {
-            // === ПОГОДА В МИРЕ ===
-            'погода москва': 'В Москве сегодня +5°C, облачно. Влажность 75%, ветер 3 м/с. Завтра ожидается +4°C с небольшим дождем.',
-            'погода санкт-петербург': 'В Санкт-Петербурге сегодня +3°C, возможен дождь. Влажность 80%, ветер 5 м/с.',
-            'погода сочи': 'В Сочи сегодня +15°C, солнечно. Влажность 65%, легкий бриз.',
-            'погода нью-йорк': 'В Нью-Йорке сегодня +18°C, ясно. Влажность 55%, ветер 4 м/с.',
-            'погода лондон': 'В Лондоне сегодня +10°C, туман. Влажность 85%, ветер 2 м/с.',
-            'погода токио': 'В Токио сегодня +12°C, дождь. Влажность 75%, ветер 6 м/с.',
-            'погода париж': 'В Париже сегодня +11°C, переменная облачность. Влажность 70%, ветер 3 м/с.',
-            'погода дубай': 'В Дубае сегодня +28°C, ясно. Влажность 40%, ветер 2 м/с.',
-            'погода сидней': 'В Сиднее сегодня +22°C, солнечно. Влажность 60%, ветер 5 м/с.',
-            
-            // === ФИЛОСОФСКИЕ ВОПРОСЫ ===
-            'когда конец света': 'Конец света - понятие относительное. С научной точки зрения, Солнце станет красным гигантом через 5 миллиардов лет. Но человечество может столкнуться с серьезными вызовами гораздо ранее из-за изменения климата или технологических рисков. Лучше сосредоточиться на том, как сделать мир лучше здесь и сейчас.',
-            'смысл жизни': 'Смысл жизни - один из вечных вопросов философии. Разные традиции предлагают различные ответы: от самопознания и духовного развития до служения другим и создания наследия. Возможно, смысл в том, чтобы найти свой собственный путь и оставить мир немного лучше, чем вы его нашли.',
-            'в чем смысл жизни': 'Смысл жизни у каждого свой. Для кого-то это любовь и семья, для других - творчество и самореализация, для третьих - познание мира и помощь другим. Важно найти то, что зажигает ваше сердце и делает вас счастливым.',
-            'зачем мы живем': 'Мы живем, чтобы испытывать, учиться, расти и вносить свой вклад в мир. Каждый человек уникален и привносит что-то особенное в общую картину человечества.',
-            'существует ли бог': 'Этот вопрос остается одним из самых глубоких в человеческой истории. Науке не удалось доказать или опровергнуть существование Бога. Каждый человек находит свой ответ через личный опыт, размышления и веру.',
-            
-            // === ТЕХНОЛОГИИ И БУДУЩЕЕ ===
-            'искусственный интеллект': 'ИИ стремительно развивается. К 2025 году мы видим интеграцию AI во все сферы жизни - от медицины до искусства. Важно развивать ИИ этично и ответственно.',
-            'будущее человечества': 'Человечество стоит на пороге великих открытий в космосе, биотехнологиях и энергетике. Ключевые вызовы - изменение климата, этика технологий и социальное равенство.',
-            'квантовые компьютеры': 'Квантовые вычисления революционизируют обработку информации. К 2025 году мы видим практическое применение в криптографии, химии и оптимизации сложных систем.',
-            
-            // === ПРАКТИЧЕСКАЯ ИНФОРМАЦИЯ ===
-            'курс доллара': 'Курс доллара к рублю: 79,82 ₽. Курс евро: 92,94 ₽. Курс юаня: 11,23 ₽.',
-            'новости': 'Основные новости: развитие искусственного интеллекта, технологические инновации, экономические обзоры, климатические изменения.',
-            'спорт': 'Актуальные спортивные события: футбол, хоккей, баскетбол. Следите за результатами матчей и турниров.',
-            'кино': 'Новые фильмы: премьеры этого месяца, популярные сериалы, кинопремьеры. Рекомендуем к просмотру.',
-            'время': `Сейчас ${new Date().toLocaleTimeString('ru-RU')}. ${new Date().toLocaleDateString('ru-RU', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}.`,
-            'дата': `Сегодня ${new Date().toLocaleDateString('ru-RU', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}.`,
-            
-            // === ОБЩИЕ ВОПРОСЫ ===
-            'привет': 'Привет! Я Findexly AI. Чем могу помочь?',
-            'как дела': 'У меня всё отлично! Готов помочь вам с поиском информации.',
-            'спасибо': 'Пожалуйста! Обращайтесь ещё, если понадобится помощь.',
-            'findexly': 'Findexly - это умный поисковик нового поколения с AI-ассистентом и передовыми технологиями поиска.',
-            'поиск': 'Я могу помочь с поиском информации. Просто введите ваш запрос в поисковую строку выше.',
-            'помощь': 'Я могу ответить на вопросы о погоде в любом городе мира, курсах валют, новостях, философских вопросах, технологиях будущего и многом другом.',
-            'создатель': 'Findexly создан Даниилом Жарковым 28 октября 2025 года. Это инновационный поисковик нового поколения.',
-            'даниил жарков': 'Даниил Жарков - создатель Findexly, умного поисковика нового поколения, разработанного в 2025 году.'
-        };
-
-        // Поисковая база данных
+        // БАЗА ДАННЫХ С РЕАЛЬНЫМИ ССЫЛКАМИ
         const searchDatabase = {
-            'погода': [
-                {
-                    title: 'Погода в Москве - точный прогноз',
-                    link: '#',
-                    snippet: 'Сегодня +5°C, облачно. Завтра +4°C, возможен небольшой дождь. Влажность 75%.'
+            // Погода
+            weather: {
+                'москва': {
+                    title: 'Погода в Москве - Яндекс.Погода',
+                    url: 'https://yandex.ru/pogoda/moscow',
+                    description: 'Точный прогноз погоды в Москве на сегодня и неделю. Температура, осадки, давление, влажность.'
                 },
-                {
-                    title: 'Прогноз погоды по всему миру',
-                    link: '#',
-                    snippet: 'Актуальные прогнозы погоды для всех городов мира. Температура, осадки, ветер.'
-                }
-            ],
-            'курс доллара': [
-                {
-                    title: 'Курс доллара ЦБ РФ',
-                    link: '#',
-                    snippet: 'Официальный курс доллара США: 79,82 ₽. Курс евро: 92,94 ₽. Обновляется ежедневно.'
+                'санкт-петербург': {
+                    title: 'Погода в Санкт-Петербурге - Gismeteo',
+                    url: 'https://www.gismeteo.ru/weather-sankt-peterburg-4079/',
+                    description: 'Подробный прогноз погоды в Санкт-Петербурге на 10 дней. Погода на карте, новости о погоде.'
                 },
-                {
-                    title: 'Курсы валют онлайн',
-                    link: '#',
-                    snippet: 'Актуальные курсы валют в банках. USD, EUR, CNY и другие валюты. Графики изменений.'
+                'сочи': {
+                    title: 'Погода в Сочи - Яндекс.Погода',
+                    url: 'https://yandex.ru/pogoda/sochi',
+                    description: 'Погода в Сочи сегодня. Температура воды, прогноз на пляжный сезон, курортная погода.'
                 }
-            ],
-            'findexly': [
-                {
-                    title: 'Findexly - умный поиск',
-                    link: '#',
-                    snippet: 'Современный поисковик с искусственным интеллектом. Быстро, точно, конфиденциально.'
+            },
+
+            // Новости
+            news: {
+                'новости': {
+                    title: 'Главные новости - Яндекс.Новости',
+                    url: 'https://news.yandex.ru/',
+                    description: 'Самые свежие и актуальные новости России и мира. Политика, экономика, происшествия.'
                 },
-                {
-                    title: 'О компании Findexly',
-                    link: '#',
-                    snippet: 'Инновационный проект в области поисковых технологий. Основан в 2025 году Даниилом Жарковым.'
+                'последние новости': {
+                    title: 'РИА Новости',
+                    url: 'https://ria.ru/',
+                    description: 'Последние новости России и мира. Фото и видео репортажи, аналитика, мнения экспертов.'
                 }
-            ],
-            'даниил жарков': [
-                {
-                    title: 'Даниил Жарков - создатель Findexly',
-                    link: '#',
-                    snippet: 'Разработчик и создатель поисковой системы Findexly. Проект запущен 28 октября 2025 года.'
+            },
+
+            // Курсы валют
+            currency: {
+                'доллар': {
+                    title: 'Курс доллара к рублю - Banki.ru',
+                    url: 'https://www.banki.ru/products/currency/usd/',
+                    description: 'Актуальный курс доллара США к российскому рублю. Графики изменений, аналитика.'
                 },
-                {
-                    title: 'Findexly - поиск нового поколения',
-                    link: '#',
-                    snippet: 'Инновационная поисковая система с AI-ассистентом и передовыми технологиями 2025 года.'
+                'евро': {
+                    title: 'Курс евро к рублю - Banki.ru',
+                    url: 'https://www.banki.ru/products/currency/eur/',
+                    description: 'Текущий курс евро к российскому рублю. Динамика изменений, прогнозы экспертов.'
                 }
-            ],
-            'конец света': [
-                {
-                    title: 'Конец света: научный взгляд',
-                    link: '#',
-                    snippet: 'С научной точки зрения, конец света как планеты наступит через 5 миллиардов лет, когда Солнце станет красным гигантом.'
+            },
+
+            // Технологии
+            tech: {
+                'искусственный интеллект': {
+                    title: 'Искусственный интеллект - Википедия',
+                    url: 'https://ru.wikipedia.org/wiki/Искусственный_интеллект',
+                    description: 'Искусственный интеллект — свойство интеллектуальных систем выполнять творческие функции.'
                 },
-                {
-                    title: 'Философия конца света',
-                    link: '#',
-                    snippet: 'Размышления о конечности существования в различных философских и религиозных традициях.'
+                'блокчейн': {
+                    title: 'Блокчейн - Википедия',
+                    url: 'https://ru.wikipedia.org/wiki/Блокчейн',
+                    description: 'Блокчейн — выстроенная по определённым правилам непрерывная последовательная цепочка блоков.'
                 }
-            ],
-            'смысл жизни': [
-                {
-                    title: 'Смысл жизни в философии',
-                    link: '#',
-                    snippet: 'Различные философские школы предлагают свои ответы на вопрос о смысле человеческого существования.'
+            },
+
+            // Популярные сайты
+            general: {
+                'яндекс': {
+                    title: 'Яндекс - поисковая система',
+                    url: 'https://yandex.ru',
+                    description: 'Поиск в интернете, почта, новости, погода, карты, переводчик и другие сервисы.'
                 },
-                {
-                    title: 'Как найти свой смысл жизни',
-                    link: '#',
-                    snippet: 'Практические советы по поиску личного смысла и предназначения в современном мире.'
+                'гугл': {
+                    title: 'Google - поисковая система',
+                    url: 'https://google.com',
+                    description: 'Крупнейшая поисковая система интернета, почта, карты, переводчик и другие сервисы.'
+                },
+                'википедия': {
+                    title: 'Википедия - свободная энциклопедия',
+                    url: 'https://wikipedia.org',
+                    description: 'Свободная общедоступная многоязычная универсальная интернет-энциклопедия.'
+                },
+                'ютуб': {
+                    title: 'YouTube - видеохостинг',
+                    url: 'https://youtube.com',
+                    description: 'Крупнейший видеохостинг в мире. Просмотр и загрузка видео, создание плейлистов.'
+                },
+                'вконтакте': {
+                    title: 'ВКонтакте - социальная сеть',
+                    url: 'https://vk.com',
+                    description: 'Крупнейшая социальная сеть в России и СНГ. Общение, музыка, видео, сообщества.'
+                },
+                'одноклассники': {
+                    title: 'Одноклассники - социальная сеть',
+                    url: 'https://ok.ru',
+                    description: 'Социальная сеть для поиска одноклассников, однокурсников, бывших выпускников.'
+                },
+                'авито': {
+                    title: 'Авито - доска объявлений',
+                    url: 'https://avito.ru',
+                    description: 'Крупнейшая доска объявлений в России. Недвижимость, авто, работа, услуги.'
                 }
-            ]
+            }
         };
 
-        // Создание частиц для фона
-        function createParticles() {
-            const particlesContainer = document.getElementById('particles');
-            const particleCount = window.innerWidth < 768 ? 15 : 30;
-            
-            for (let i = 0; i < particleCount; i++) {
-                const particle = document.createElement('div');
-                particle.className = 'particle';
+        // УМНЫЙ NLP ПАРСЕР
+        class SmartSearchParser {
+            constructor() {
+                this.prepositions = ['в', 'на', 'для', 'по', 'о', 'об', 'от', 'из', 'у', 'с', 'со'];
+                this.citySynonyms = {
+                    'спб': 'санкт-петербург',
+                    'питер': 'санкт-петербург',
+                    'мск': 'москва',
+                    'нск': 'новосибирск',
+                    'екб': 'екатеринбург',
+                    'нн': 'нижний новгород'
+                };
+            }
+
+            parse(query) {
+                const normalizedQuery = query.toLowerCase().trim();
+                let result = { type: 'general', originalQuery: query };
                 
-                const size = Math.random() * 4 + 1;
-                const posX = Math.random() * 100;
-                const posY = Math.random() * 100;
-                const delay = Math.random() * 15;
-                const duration = Math.random() * 10 + 15;
+                if (this.isWeatherQuery(normalizedQuery)) {
+                    result = this.parseWeatherQuery(normalizedQuery, query);
+                } else if (this.isCurrencyQuery(normalizedQuery)) {
+                    result = this.parseCurrencyQuery(normalizedQuery, query);
+                } else if (this.isTimeQuery(normalizedQuery)) {
+                    result = { type: 'time', originalQuery: query };
+                } else if (this.isDateQuery(normalizedQuery)) {
+                    result = { type: 'date', originalQuery: query };
+                } else if (this.isNewsQuery(normalizedQuery)) {
+                    result = { type: 'news', originalQuery: query };
+                } else if (this.isCalculationQuery(normalizedQuery)) {
+                    result = this.parseCalculationQuery(normalizedQuery, query);
+                } else if (this.isDefinitionQuery(normalizedQuery)) {
+                    result = this.parseDefinitionQuery(normalizedQuery, query);
+                } else if (this.isCreatorQuery(normalizedQuery)) {
+                    result = { type: 'creator', originalQuery: query };
+                }
                 
-                particle.style.width = `${size}px`;
-                particle.style.height = `${size}px`;
-                particle.style.left = `${posX}%`;
-                particle.style.top = `${posY}%`;
-                particle.style.animationDelay = `${delay}s`;
-                particle.style.animationDuration = `${duration}s`;
+                return result;
+            }
+
+            isWeatherQuery(query) {
+                const weatherWords = ['погода', 'прогноз', 'температура', 'градус', 'дождь', 'снег', 'солнце', 'облачно'];
+                return weatherWords.some(word => query.includes(word));
+            }
+
+            parseWeatherQuery(query, originalQuery) {
+                let city = query
+                    .replace(/(погода|прогноз|температура|градус|дождь|снег|солнце|облачно)/g, '')
+                    .replace(new RegExp(`\\b(${this.prepositions.join('|')})\\b`, 'g'), '')
+                    .trim();
                 
-                const colors = ['#00d4ff', '#6c63ff', '#ff6b6b'];
-                const color = colors[Math.floor(Math.random() * colors.length)];
-                particle.style.background = color;
+                if (this.citySynonyms[city]) {
+                    city = this.citySynonyms[city];
+                }
                 
-                particlesContainer.appendChild(particle);
+                city = city.replace(/[,\s]+/g, ' ').trim();
+                
+                return {
+                    type: 'weather',
+                    city: city,
+                    originalQuery: originalQuery
+                };
+            }
+
+            isCurrencyQuery(query) {
+                const currencyWords = ['курс', 'стоимость', 'цена', 'доллар', 'евро', 'юань', 'фунт', 'йен', 'рубль'];
+                return currencyWords.some(word => query.includes(word));
+            }
+
+            parseCurrencyQuery(query, originalQuery) {
+                const currencies = ['доллар', 'евро', 'юань', 'фунт', 'йен', 'рубль'];
+                const foundCurrency = currencies.find(currency => query.includes(currency));
+                
+                return {
+                    type: 'currency',
+                    currency: foundCurrency || 'доллар',
+                    originalQuery: originalQuery
+                };
+            }
+
+            isTimeQuery(query) {
+                return /(время|который\s+час|сколько\s+времени|сейчас\s+время)/i.test(query);
+            }
+
+            isDateQuery(query) {
+                return /(дата|число|сегодня|какое\s+число|какой\s+сегодня)/i.test(query);
+            }
+
+            isNewsQuery(query) {
+                return /(новости|события|происшествия|что\s+нового)/i.test(query);
+            }
+
+            isCalculationQuery(query) {
+                return /(посчитай|вычисли|сколько будет|реши|вычисли|калькулятор)/i.test(query) || 
+                       /[0-9+\-*/().]/.test(query);
+            }
+
+            parseCalculationQuery(query, originalQuery) {
+                const mathMatch = query.match(/(?:сколько будет|посчитай|вычисли)\s+([0-9+\-*/().\s]+)/i);
+                let expression = mathMatch ? mathMatch[1] : query;
+                expression = expression.replace(/[^0-9+\-*/().\s]/g, '');
+                
+                return {
+                    type: 'calculation',
+                    expression: expression.trim(),
+                    originalQuery: originalQuery
+                };
+            }
+
+            isDefinitionQuery(query) {
+                return /(что такое|кто такой|определение|что значит)/i.test(query);
+            }
+
+            parseDefinitionQuery(query, originalQuery) {
+                const definitionMatch = query.match(/(?:что такое|кто такой|определение|что значит)\s+([а-яё\s-]+)/i);
+                const term = definitionMatch ? definitionMatch[1].trim() : query.replace(/(что такое|кто такой|определение|что значит)/i, '').trim();
+                
+                return {
+                    type: 'definition',
+                    term: term,
+                    originalQuery: originalQuery
+                };
+            }
+
+            isCreatorQuery(query) {
+                return /(кто создал|создатель|автор|разработчик)\s+findexly/i.test(query);
             }
         }
 
-        // Голосовой поиск
-        function setupVoiceSearch() {
-            const voiceSearchBtn = document.getElementById('voiceSearchBtn');
-            const voiceIndicator = document.getElementById('voiceIndicator');
-            const searchInput = document.getElementById('search-input');
-            
-            if (!('webkitSpeechRecognition' in window) && !('SpeechRecognition' in window)) {
-                voiceSearchBtn.style.display = 'none';
-                return;
+        // УМНАЯ СИСТЕМА ПОДСКАЗОК
+        class SmartSuggestions {
+            constructor() {
+                this.suggestions = [
+                    'погода в москве',
+                    'курс доллара',
+                    'последние новости',
+                    'что такое искусственный интеллект',
+                    'погода в сочи',
+                    'курс евро',
+                    'кто создал findexly',
+                    'погода в калуге',
+                    'новости технологий',
+                    'яндекс',
+                    'гугл',
+                    'википедия',
+                    'ютуб',
+                    'вконтакте',
+                    'авито'
+                ];
             }
-            
-            const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-            const recognition = new SpeechRecognition();
-            
-            recognition.continuous = false;
-            recognition.interimResults = false;
-            recognition.lang = 'ru-RU';
-            
-            voiceSearchBtn.addEventListener('click', () => {
-                if (voiceSearchBtn.classList.contains('listening')) {
-                    recognition.stop();
-                    voiceSearchBtn.classList.remove('listening');
-                    voiceIndicator.style.display = 'none';
+
+            getSuggestions(query) {
+                if (!query) return this.suggestions.slice(0, 5);
+                
+                const normalizedQuery = query.toLowerCase();
+                return this.suggestions
+                    .filter(suggestion => 
+                        suggestion.toLowerCase().includes(normalizedQuery) ||
+                        this.calculateSimilarity(suggestion, normalizedQuery) > 0.3
+                    )
+                    .slice(0, 5);
+            }
+
+            calculateSimilarity(str1, str2) {
+                const longer = str1.length > str2.length ? str1 : str2;
+                const shorter = str1.length > str2.length ? str2 : str1;
+                
+                if (longer.length === 0) return 1.0;
+                
+                return (longer.length - this.editDistance(longer, shorter)) / parseFloat(longer.length);
+            }
+
+            editDistance(s1, s2) {
+                s1 = s1.toLowerCase();
+                s2 = s2.toLowerCase();
+                
+                const costs = [];
+                for (let i = 0; i <= s1.length; i++) {
+                    let lastValue = i;
+                    for (let j = 0; j <= s2.length; j++) {
+                        if (i === 0) {
+                            costs[j] = j;
+                        } else {
+                            if (j > 0) {
+                                let newValue = costs[j - 1];
+                                if (s1.charAt(i - 1) !== s2.charAt(j - 1)) {
+                                    newValue = Math.min(Math.min(newValue, lastValue), costs[j]) + 1;
+                                }
+                                costs[j - 1] = lastValue;
+                                lastValue = newValue;
+                            }
+                        }
+                    }
+                    if (i > 0) costs[s2.length] = lastValue;
+                }
+                return costs[s2.length];
+            }
+        }
+
+        // ОСНОВНОЙ КЛАСС ПОИСКОВОЙ СИСТЕМЫ
+        class FindexlySearch {
+            constructor() {
+                this.parser = new SmartSearchParser();
+                this.suggestions = new SmartSuggestions();
+                this.searchHistory = JSON.parse(localStorage.getItem('findexly_history') || '[]');
+                this.init();
+            }
+
+            init() {
+                this.setupEventListeners();
+                this.setupSearchFromUrl();
+                this.createParticles();
+                this.setupVoiceSearch();
+                this.setupThemeToggle();
+            }
+
+            setupEventListeners() {
+                document.getElementById('search-form').addEventListener('submit', (e) => {
+                    e.preventDefault();
+                    this.performSearch();
+                });
+
+                const searchInput = document.getElementById('search-input');
+                searchInput.addEventListener('input', (e) => {
+                    this.showSuggestions(e.target.value);
+                });
+
+                searchInput.addEventListener('keydown', (e) => {
+                    this.handleSearchKeydown(e);
+                });
+
+                searchInput.addEventListener('focus', () => {
+                    this.showSuggestions(searchInput.value);
+                });
+
+                document.addEventListener('click', (e) => {
+                    if (!e.target.closest('.search-container')) {
+                        this.hideSuggestions();
+                    }
+                });
+
+                document.querySelectorAll('.quick-btn').forEach(btn => {
+                    btn.addEventListener('click', (e) => {
+                        const query = btn.getAttribute('data-query');
+                        document.getElementById('search-input').value = query;
+                        this.performSearch();
+                    });
+                });
+
+                // Внешний поиск
+                document.getElementById('google-search').addEventListener('click', (e) => {
+                    e.preventDefault();
+                    const query = document.getElementById('search-input').value;
+                    if (query) {
+                        window.open(`https://www.google.com/search?q=${encodeURIComponent(query)}`, '_blank');
+                    }
+                });
+
+                document.getElementById('yandex-search').addEventListener('click', (e) => {
+                    e.preventDefault();
+                    const query = document.getElementById('search-input').value;
+                    if (query) {
+                        window.open(`https://yandex.ru/search/?text=${encodeURIComponent(query)}`, '_blank');
+                    }
+                });
+
+                document.getElementById('duckduckgo-search').addEventListener('click', (e) => {
+                    e.preventDefault();
+                    const query = document.getElementById('search-input').value;
+                    if (query) {
+                        window.open(`https://duckduckgo.com/?q=${encodeURIComponent(query)}`, '_blank');
+                    }
+                });
+            }
+
+            setupSearchFromUrl() {
+                const urlParams = new URLSearchParams(window.location.search);
+                const query = urlParams.get('q');
+                if (query) {
+                    document.getElementById('search-input').value = query;
+                    this.performSearch();
+                }
+            }
+
+            showSuggestions(query) {
+                const suggestionsContainer = document.getElementById('suggestions');
+                const suggestions = this.suggestions.getSuggestions(query);
+                
+                if (suggestions.length > 0 && query.length > 0) {
+                    suggestionsContainer.innerHTML = suggestions
+                        .map(suggestion => `
+                            <div class="suggestion-item" data-query="${suggestion}">
+                                <i class="fas fa-search" style="margin-right: 8px; opacity: 0.6;"></i>
+                                ${suggestion}
+                            </div>
+                        `)
+                        .join('');
+                    
+                    suggestionsContainer.style.display = 'block';
+                    
+                    suggestionsContainer.querySelectorAll('.suggestion-item').forEach((item, index) => {
+                        item.addEventListener('click', () => {
+                            document.getElementById('search-input').value = item.getAttribute('data-query');
+                            this.performSearch();
+                            this.hideSuggestions();
+                        });
+                    });
                 } else {
-                    try {
+                    this.hideSuggestions();
+                }
+            }
+
+            hideSuggestions() {
+                document.getElementById('suggestions').style.display = 'none';
+            }
+
+            handleSearchKeydown(e) {
+                const suggestions = document.querySelectorAll('.suggestion-item');
+                const activeSuggestion = document.querySelector('.suggestion-item.active');
+                
+                if (e.key === 'ArrowDown') {
+                    e.preventDefault();
+                    if (!activeSuggestion) {
+                        suggestions[0]?.classList.add('active');
+                    } else {
+                        const next = activeSuggestion.nextElementSibling;
+                        if (next) {
+                            activeSuggestion.classList.remove('active');
+                            next.classList.add('active');
+                        }
+                    }
+                } else if (e.key === 'ArrowUp') {
+                    e.preventDefault();
+                    if (activeSuggestion) {
+                        const prev = activeSuggestion.previousElementSibling;
+                        activeSuggestion.classList.remove('active');
+                        if (prev) {
+                            prev.classList.add('active');
+                        }
+                    }
+                } else if (e.key === 'Enter' && activeSuggestion) {
+                    e.preventDefault();
+                    document.getElementById('search-input').value = activeSuggestion.getAttribute('data-query');
+                    this.performSearch();
+                    this.hideSuggestions();
+                }
+            }
+
+            performSearch() {
+                const query = document.getElementById('search-input').value.trim();
+                if (!query) return;
+
+                this.hideSuggestions();
+                this.addToHistory(query);
+                this.showLoading();
+                this.updateUrl(query);
+
+                setTimeout(() => {
+                    const results = this.processQuery(query);
+                    this.displayResults(results, query);
+                }, 600);
+            }
+
+            processQuery(query) {
+                const parsed = this.parser.parse(query);
+                
+                switch (parsed.type) {
+                    case 'weather':
+                        return this.getWeatherResults(parsed);
+                    case 'currency':
+                        return this.getCurrencyResults(parsed);
+                    case 'time':
+                        return this.getTimeResults();
+                    case 'date':
+                        return this.getDateResults();
+                    case 'news':
+                        return this.getNewsResults();
+                    case 'calculation':
+                        return this.getCalculationResults(parsed);
+                    case 'definition':
+                        return this.getDefinitionResults(parsed);
+                    case 'creator':
+                        return this.getCreatorResults();
+                    default:
+                        return this.getGeneralResults(parsed);
+                }
+            }
+
+            getWeatherResults(parsed) {
+                const city = parsed.city;
+                const weatherData = searchDatabase.weather[city];
+                
+                if (weatherData) {
+                    return [{
+                        title: weatherData.title,
+                        url: weatherData.url,
+                        description: weatherData.description,
+                        type: 'weather'
+                    }];
+                } else {
+                    return [{
+                        title: `Погода в ${this.capitalizeFirstLetter(city)}`,
+                        url: `https://yandex.ru/search/?text=погода+в+${encodeURIComponent(city)}`,
+                        description: `Поиск информации о погоде в городе ${city}.`,
+                        type: 'weather'
+                    }];
+                }
+            }
+
+            getCurrencyResults(parsed) {
+                const currency = parsed.currency;
+                const currencyData = searchDatabase.currency[currency];
+                
+                if (currencyData) {
+                    return [{
+                        title: currencyData.title,
+                        url: currencyData.url,
+                        description: currencyData.description,
+                        type: 'currency'
+                    }];
+                }
+                
+                return [{
+                    title: `Курс ${currency}`,
+                    url: `https://www.banki.ru/products/currency/${currency}/`,
+                    description: `Актуальный курс ${currency} к российскому рублю.`,
+                    type: 'currency'
+                }];
+            }
+
+            getTimeResults() {
+                return [{
+                    title: 'Текущее время',
+                    url: 'https://time.is/',
+                    description: `Сейчас ${new Date().toLocaleTimeString('ru-RU')}. Точное время по всему миру.`,
+                    type: 'time'
+                }];
+            }
+
+            getDateResults() {
+                return [{
+                    title: 'Сегодняшняя дата',
+                    url: 'https://calendar.yandex.ru/',
+                    description: `Сегодня ${new Date().toLocaleDateString('ru-RU', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}. Календарь на месяц.`,
+                    type: 'date'
+                }];
+            }
+
+            getNewsResults() {
+                const newsData = searchDatabase.news['новости'];
+                return [{
+                    title: newsData.title,
+                    url: newsData.url,
+                    description: newsData.description,
+                    type: 'news'
+                }];
+            }
+
+            getCalculationResults(parsed) {
+                try {
+                    const result = this.safeEval(parsed.expression);
+                    return [{
+                        title: `Результат вычисления`,
+                        url: '#',
+                        description: `${parsed.expression} = ${result}`,
+                        type: 'calculation'
+                    }];
+                } catch (e) {
+                    return [{
+                        title: 'Ошибка вычисления',
+                        url: '#',
+                        description: 'Не удалось вычислить выражение. Проверьте правильность ввода.',
+                        type: 'error'
+                    }];
+                }
+            }
+
+            getDefinitionResults(parsed) {
+                const term = parsed.term;
+                const techData = searchDatabase.tech[term];
+                
+                if (techData) {
+                    return [{
+                        title: techData.title,
+                        url: techData.url,
+                        description: techData.description,
+                        type: 'definition'
+                    }];
+                } else {
+                    return [{
+                        title: `Что такое ${term}`,
+                        url: `https://ru.wikipedia.org/wiki/${encodeURIComponent(term)}`,
+                        description: `Поиск определения термина "${term}" в Википедии.`,
+                        type: 'definition'
+                    }];
+                }
+            }
+
+            getCreatorResults() {
+                return [{
+                    title: 'Создатель Findexly',
+                    url: '#',
+                    description: 'Findexly создан Даниилом Жарковым 28 октября 2025 года как образовательный проект.',
+                    type: 'creator'
+                }];
+            }
+
+            getGeneralResults(parsed) {
+                const query = parsed.originalQuery.toLowerCase();
+                const results = [];
+                
+                // Поиск в базе популярных сайтов
+                for (const [key, value] of Object.entries(searchDatabase.general)) {
+                    if (query.includes(key)) {
+                        results.push({
+                            title: value.title,
+                            url: value.url,
+                            description: value.description,
+                            type: 'general'
+                        });
+                    }
+                }
+                
+                // Поиск в других категориях
+                for (const category in searchDatabase) {
+                    if (category !== 'general') {
+                        for (const [key, value] of Object.entries(searchDatabase[category])) {
+                            if (query.includes(key)) {
+                                results.push({
+                                    title: value.title,
+                                    url: value.url,
+                                    description: value.description,
+                                    type: category
+                                });
+                            }
+                        }
+                    }
+                }
+                
+                // Если ничего не найдено, предлагаем поиск в других системах
+                if (results.length === 0) {
+                    results.push({
+                        title: `Результаты по запросу "${parsed.originalQuery}"`,
+                        url: `https://yandex.ru/search/?text=${encodeURIComponent(parsed.originalQuery)}`,
+                        description: 'Findexly обработал ваш запрос. Для более точных результатов сформулируйте вопрос более конкретно.',
+                        type: 'general'
+                    });
+                }
+                
+                return results.slice(0, 5);
+            }
+
+            safeEval(expression) {
+                const cleanExpr = expression.replace(/[^0-9+\-*/().]/g, '');
+                if (/^[0-9+\-*/().\s]+$/.test(cleanExpr)) {
+                    return Function(`"use strict"; return (${cleanExpr})`)();
+                }
+                throw new Error('Invalid expression');
+            }
+
+            capitalizeFirstLetter(string) {
+                return string.charAt(0).toUpperCase() + string.slice(1);
+            }
+
+            addToHistory(query) {
+                this.searchHistory = this.searchHistory.filter(item => item !== query);
+                this.searchHistory.unshift(query);
+                this.searchHistory = this.searchHistory.slice(0, 10);
+                localStorage.setItem('findexly_history', JSON.stringify(this.searchHistory));
+            }
+
+            showLoading() {
+                const container = document.getElementById('results-container');
+                const resultsSection = document.getElementById('results-section');
+                container.innerHTML = `
+                    <div class="loading">
+                        <i class="fas fa-spinner fa-spin" style="font-size: 2rem; margin-bottom: 1rem;"></i>
+                        <p>Анализируем запрос...</p>
+                    </div>
+                `;
+                resultsSection.style.display = 'block';
+            }
+
+            displayResults(results, query) {
+                const container = document.getElementById('results-container');
+                const resultsSection = document.getElementById('results-section');
+                const resultsCount = document.getElementById('results-count');
+                const externalSearch = document.getElementById('external-search');
+
+                container.innerHTML = '';
+
+                if (results.length === 0) {
+                    container.innerHTML = `
+                        <div class="no-results">
+                            <i class="fas fa-search" style="font-size: 3rem; margin-bottom: 1rem;"></i>
+                            <p>По запросу "${query}" ничего не найдено</p>
+                            <p style="margin-top: 1rem; font-size: 0.9rem;">Попробуйте изменить формулировку запроса</p>
+                        </div>
+                    `;
+                    externalSearch.style.display = 'block';
+                } else {
+                    results.forEach((result, index) => {
+                        const resultElement = document.createElement('div');
+                        resultElement.className = 'result-item animate-fade-in';
+                        resultElement.style.animationDelay = `${index * 0.1}s`;
+                        
+                        resultElement.innerHTML = `
+                            <a href="${result.url}" class="result-title" target="_blank">${result.title}</a>
+                            <div class="result-url">${new URL(result.url).hostname}</div>
+                            <div class="result-description">${result.description}</div>
+                            <div class="result-actions">
+                                <button class="result-action" onclick="window.open('${result.url}', '_blank')">Открыть</button>
+                                <button class="result-action" onclick="addToFavorites('${result.title}', '${result.url}')">В избранное</button>
+                            </div>
+                        `;
+                        container.appendChild(resultElement);
+                    });
+                    
+                    // Показываем кнопки внешнего поиска если результатов мало
+                    externalSearch.style.display = results.length < 3 ? 'block' : 'none';
+                }
+
+                resultsCount.textContent = `Найдено: ${results.length}`;
+                resultsSection.style.display = 'block';
+                
+                setTimeout(() => {
+                    resultsSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }, 100);
+            }
+
+            updateUrl(query) {
+                try {
+                    const newUrl = new URL(window.location);
+                    newUrl.searchParams.set('q', query);
+                    window.history.pushState({}, '', newUrl);
+                } catch (e) {
+                    console.error('Error updating URL:', e);
+                }
+            }
+
+            createParticles() {
+                const particlesContainer = document.getElementById('particles');
+                const particleCount = window.innerWidth < 768 ? 15 : 30;
+                
+                for (let i = 0; i < particleCount; i++) {
+                    const particle = document.createElement('div');
+                    particle.className = 'particle';
+                    
+                    const size = Math.random() * 4 + 1;
+                    const posX = Math.random() * 100;
+                    const posY = Math.random() * 100;
+                    const delay = Math.random() * 15;
+                    const duration = Math.random() * 10 + 15;
+                    
+                    particle.style.width = `${size}px`;
+                    particle.style.height = `${size}px`;
+                    particle.style.left = `${posX}%`;
+                    particle.style.top = `${posY}%`;
+                    particle.style.animationDelay = `${delay}s`;
+                    particle.style.animationDuration = `${duration}s`;
+                    
+                    const colors = ['#00d4ff', '#6c63ff', '#ff6b6b'];
+                    const color = colors[Math.floor(Math.random() * colors.length)];
+                    particle.style.background = color;
+                    
+                    particlesContainer.appendChild(particle);
+                }
+            }
+
+            setupVoiceSearch() {
+                const voiceSearchBtn = document.getElementById('voiceSearchBtn');
+                const voiceIndicator = document.getElementById('voiceIndicator');
+                const searchInput = document.getElementById('search-input');
+                
+                if (!('webkitSpeechRecognition' in window) && !('SpeechRecognition' in window)) {
+                    voiceSearchBtn.style.display = 'none';
+                    return;
+                }
+                
+                const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+                const recognition = new SpeechRecognition();
+                
+                recognition.continuous = false;
+                recognition.interimResults = false;
+                recognition.lang = 'ru-RU';
+                
+                voiceSearchBtn.addEventListener('click', () => {
+                    if (voiceSearchBtn.classList.contains('listening')) {
+                        recognition.stop();
+                        voiceSearchBtn.classList.remove('listening');
+                        voiceIndicator.style.display = 'none';
+                    } else {
                         recognition.start();
                         voiceSearchBtn.classList.add('listening');
                         voiceIndicator.style.display = 'block';
-                    } catch (e) {
-                        console.error('Speech recognition error:', e);
+                    }
+                });
+                
+                recognition.onresult = (event) => {
+                    const transcript = event.results[0][0].transcript;
+                    searchInput.value = transcript;
+                    voiceSearchBtn.classList.remove('listening');
+                    voiceIndicator.style.display = 'none';
+                    this.performSearch();
+                };
+                
+                recognition.onend = () => {
+                    voiceSearchBtn.classList.remove('listening');
+                    voiceIndicator.style.display = 'none';
+                };
+            }
+
+            setupThemeToggle() {
+                const themeToggle = document.getElementById('themeToggle');
+                const currentTheme = localStorage.getItem('theme') || 'dark';
+                
+                if (currentTheme === 'light') {
+                    document.body.classList.add('light-theme');
+                }
+                
+                themeToggle.addEventListener('click', () => {
+                    document.body.classList.toggle('light-theme');
+                    const theme = document.body.classList.contains('light-theme') ? 'light' : 'dark';
+                    localStorage.setItem('theme', theme);
+                });
+            }
+        }
+
+        // AI ПОМОЩНИК
+        class AIAssistant {
+            constructor() {
+                this.knowledgeBase = {
+                    greetings: {
+                        'привет': 'Привет! Я Findexly AI. Чем могу помочь?',
+                        'здравствуй': 'Здравствуйте! Задайте ваш вопрос.',
+                        'хай': 'Привет! Готов помочь с поиском информации.',
+                        'добрый день': 'Добрый день! Чем могу быть полезен?'
+                    },
+                    farewells: {
+                        'пока': 'До свидания! Возвращайтесь, если будут вопросы.',
+                        'до свидания': 'Всего доброго!',
+                        'спасибо': 'Пожалуйста! Обращайтесь ещё.'
+                    }
+                };
+            }
+
+            processMessage(message) {
+                const normalized = message.toLowerCase().trim();
+                
+                for (const [greeting, response] of Object.entries(this.knowledgeBase.greetings)) {
+                    if (normalized.includes(greeting)) {
+                        return response;
                     }
                 }
-            });
-            
-            recognition.onstart = function() {
-                voiceSearchBtn.style.background = 'var(--accent-primary)';
-                voiceSearchBtn.style.color = 'var(--text-primary)';
-            };
-            
-            recognition.onresult = function(event) {
-                const transcript = event.results[0][0].transcript;
-                searchInput.value = transcript;
-                voiceSearchBtn.classList.remove('listening');
-                voiceIndicator.style.display = 'none';
-                voiceSearchBtn.style.background = '';
-                voiceSearchBtn.style.color = '';
+
+                for (const [farewell, response] of Object.entries(this.knowledgeBase.farewells)) {
+                    if (normalized.includes(farewell)) {
+                        return response;
+                    }
+                }
+
+                const searchParser = new SmartSearchParser();
+                const parsed = searchParser.parse(message);
+                const results = new FindexlySearch().processQuery(message);
                 
-                performSearch();
-            };
-            
-            recognition.onerror = function(event) {
-                console.error('Speech recognition error', event.error);
-                voiceSearchBtn.classList.remove('listening');
-                voiceIndicator.style.display = 'none';
-                voiceSearchBtn.style.background = '';
-                voiceSearchBtn.style.color = '';
-            };
-            
-            recognition.onend = function() {
-                voiceSearchBtn.classList.remove('listening');
-                voiceIndicator.style.display = 'none';
-                voiceSearchBtn.style.background = '';
-                voiceSearchBtn.style.color = '';
-            };
-        }
+                if (results.length > 0 && results[0].type !== 'general') {
+                    return results[0].description;
+                }
 
-        // Переключение темы
-        function setupThemeToggle() {
-            const themeToggle = document.getElementById('themeToggle');
-            const currentTheme = localStorage.getItem('theme') || 'dark';
-            
-            if (currentTheme === 'light') {
-                document.body.classList.add('light-theme');
+                return 'Извините, я не совсем понял ваш вопрос. Можете переформулировать?';
             }
-            
-            themeToggle.addEventListener('click', () => {
-                document.body.classList.toggle('light-theme');
-                const theme = document.body.classList.contains('light-theme') ? 'light' : 'dark';
-                localStorage.setItem('theme', theme);
-            });
         }
 
-        // AI Помощник
+        // ГЛОБАЛЬНЫЕ ФУНКЦИИ
         function toggleAIChat() {
             const chat = document.getElementById('ai-chat');
             const isHidden = chat.style.display === 'none' || chat.style.display === '';
@@ -1472,18 +2199,9 @@
             addMessage(message, 'user');
             input.value = '';
 
-            // Поиск ответа в базе знаний
-            let response = 'Извините, я пока не знаю ответ на этот вопрос. Попробуйте спросить о погоде в любом городе мира, философских вопросах или технологиях будущего.';
-            
-            const lowerMessage = message.toLowerCase();
-            for (const [key, answer] of Object.entries(aiKnowledgeBase)) {
-                if (lowerMessage.includes(key)) {
-                    response = answer;
-                    break;
-                }
-            }
+            const ai = new AIAssistant();
+            const response = ai.processMessage(message);
 
-            // Добавляем ответ AI с задержкой
             setTimeout(() => {
                 addMessage(response, 'ai');
             }, 500);
@@ -1498,230 +2216,51 @@
             messages.scrollTop = messages.scrollHeight;
         }
 
-        // Поисковая система
-        class FindexlySearch {
-            constructor() {
-                this.init();
-            }
-
-            init() {
-                this.setupEventListeners();
-                this.setupSearchFromUrl();
-            }
-
-            setupEventListeners() {
-                const searchForm = document.getElementById('search-form');
-                const searchInput = document.getElementById('search-input');
-                
-                if (searchForm) {
-                    searchForm.addEventListener('submit', (e) => {
-                        e.preventDefault();
-                        this.performSearch();
-                    });
-                }
-                
-                if (searchInput) {
-                    searchInput.addEventListener('keypress', (e) => {
-                        if (e.key === 'Enter') this.performSearch();
-                    });
-                }
-
-                document.querySelectorAll('.quick-btn').forEach(btn => {
-                    btn.addEventListener('click', (e) => {
-                        const query = btn.getAttribute('data-query');
-                        document.getElementById('search-input').value = query;
-                        this.performSearch();
-                    });
-                });
-
-                // Внешний поиск
-                const googleSearch = document.getElementById('google-search');
-                const yandexSearch = document.getElementById('yandex-search');
-                
-                if (googleSearch) {
-                    googleSearch.addEventListener('click', (e) => {
-                        e.preventDefault();
-                        const query = document.getElementById('search-input').value;
-                        if (query) {
-                            window.open(`https://www.google.com/search?q=${encodeURIComponent(query)}`, '_blank');
-                        }
-                    });
-                }
-                
-                if (yandexSearch) {
-                    yandexSearch.addEventListener('click', (e) => {
-                        e.preventDefault();
-                        const query = document.getElementById('search-input').value;
-                        if (query) {
-                            window.open(`https://yandex.ru/search/?text=${encodeURIComponent(query)}`, '_blank');
-                        }
-                    });
-                }
-            }
-
-            setupSearchFromUrl() {
-                const urlParams = new URLSearchParams(window.location.search);
-                const query = urlParams.get('q');
-                if (query) {
-                    document.getElementById('search-input').value = query;
-                    this.performSearch();
-                }
-            }
-
-            performSearch() {
-                const searchInput = document.getElementById('search-input');
-                if (!searchInput) return;
-                
-                const query = searchInput.value.trim();
-                if (!query) return;
-
-                this.showLoading();
-                this.updateUrl(query);
-
-                setTimeout(() => {
-                    const results = this.getSearchResults(query);
-                    this.displayResults(results, query);
-                }, 800);
-            }
-
-            getSearchResults(query) {
-                const lowerQuery = query.toLowerCase();
-                
-                // Прямые совпадения
-                if (searchDatabase[lowerQuery]) {
-                    return searchDatabase[lowerQuery];
-                }
-
-                // Поиск по ключевым словам
-                for (const [key, results] of Object.entries(searchDatabase)) {
-                    if (lowerQuery.includes(key)) {
-                        return results;
-                    }
-                }
-
-                // Общие результаты
-                return [
-                    {
-                        title: `Результаты по запросу "${query}"`,
-                        link: '#',
-                        snippet: 'Findexly обработал ваш запрос. Для более точных результатов уточните поисковый запрос.'
-                    },
-                    {
-                        title: 'Findexly AI Помощник',
-                        link: '#ai',
-                        snippet: 'Задайте вопрос нашему AI-ассистенту для получения быстрого ответа.'
-                    }
-                ];
-            }
-
-            displayResults(results, query) {
-                const container = document.getElementById('results-container');
-                const resultsSection = document.getElementById('results-section');
-                const resultsCount = document.getElementById('results-count');
-                const externalSearch = document.getElementById('external-search');
-
-                if (!container || !resultsSection) return;
-
-                container.innerHTML = '';
-
-                if (results.length === 0) {
-                    container.innerHTML = `
-                        <div class="no-results">
-                            <i class="fas fa-search" style="font-size: 3rem; margin-bottom: 1rem;"></i>
-                            <p>По запросу "${query}" ничего не найдено</p>
-                            <p style="margin-top: 1rem; font-size: 0.9rem;">Попробуйте изменить формулировку запроса</p>
-                        </div>
-                    `;
-                    if (externalSearch) externalSearch.style.display = 'block';
-                } else {
-                    results.forEach((result, index) => {
-                        const resultElement = document.createElement('div');
-                        resultElement.className = 'result-item animate-fade-in';
-                        resultElement.style.animationDelay = `${index * 0.1}s`;
-                        
-                        resultElement.innerHTML = `
-                            <a href="${result.link}" class="result-title">${result.title}</a>
-                            <div class="result-url">findexly.com</div>
-                            <div class="result-description">${result.snippet}</div>
-                            <div class="result-actions">
-                                <button class="result-action">Сохранить</button>
-                                <button class="result-action">Поделиться</button>
-                            </div>
-                        `;
-                        container.appendChild(resultElement);
-                    });
-                    
-                    if (externalSearch) {
-                        externalSearch.style.display = results.length < 3 ? 'block' : 'none';
-                    }
-                }
-
-                if (resultsCount) resultsCount.textContent = `Найдено: ${results.length}`;
-                resultsSection.style.display = 'block';
-                
-                // Плавная прокрутка к результатам
-                setTimeout(() => {
-                    resultsSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                }, 100);
-            }
-
-            showLoading() {
-                const container = document.getElementById('results-container');
-                const resultsSection = document.getElementById('results-section');
-                
-                if (!container || !resultsSection) return;
-                
-                container.innerHTML = `
-                    <div class="loading">
-                        <i class="fas fa-spinner fa-spin" style="font-size: 2rem; margin-bottom: 1rem;"></i>
-                        <p>Анализируем запрос...</p>
-                    </div>
-                `;
-                resultsSection.style.display = 'block';
-            }
-
-            updateUrl(query) {
-                try {
-                    const newUrl = new URL(window.location);
-                    newUrl.searchParams.set('q', query);
-                    window.history.pushState({}, '', newUrl);
-                } catch (e) {
-                    console.error('Error updating URL:', e);
-                }
-            }
+        function addToFavorites(title, url) {
+            const favorites = JSON.parse(localStorage.getItem('findexly_favorites') || '[]');
+            favorites.push({ title, url, date: new Date().toISOString() });
+            localStorage.setItem('findexly_favorites', JSON.stringify(favorites));
+            
+            showNotification('Добавлено в избранное!');
         }
 
-        // Инициализация при загрузке страницы
+        function showNotification(message) {
+            const notification = document.createElement('div');
+            notification.style.cssText = `
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                background: var(--success);
+                color: white;
+                padding: 12px 20px;
+                border-radius: 8px;
+                box-shadow: var(--shadow);
+                z-index: 10000;
+                animation: slideIn 0.3s ease;
+            `;
+            notification.textContent = message;
+            document.body.appendChild(notification);
+            
+            setTimeout(() => {
+                notification.remove();
+            }, 3000);
+        }
+
+        // ИНИЦИАЛИЗАЦИЯ
         document.addEventListener('DOMContentLoaded', function() {
-            // Инициализация поисковой системы
-            new FindexlySearch();
+            window.searchEngine = new FindexlySearch();
             
-            // Создание частиц
-            createParticles();
-            
-            // Настройка голосового поиска
-            setupVoiceSearch();
-            
-            // Настройка переключения темы
-            setupThemeToggle();
-            
-            // Анимация появления элементов
             const elements = document.querySelectorAll('.animate-fade-in');
             elements.forEach((el, index) => {
                 el.style.opacity = '0';
                 setTimeout(() => {
-                    el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+                    el.style.transition = 'opacity 0.6s ease';
                     el.style.opacity = '1';
                 }, index * 100);
             });
 
-            // Фокус на поле поиска
-            const searchInput = document.getElementById('search-input');
-            if (searchInput) {
-                searchInput.focus();
-            }
+            document.getElementById('search-input').focus();
             
-            // Обработка навигационных ссылок
             document.querySelectorAll('.nav-link[href^="#"]').forEach(link => {
                 link.addEventListener('click', function(e) {
                     e.preventDefault();
@@ -1735,13 +2274,11 @@
             });
         });
 
-        // Обработка изменения размера окна
         window.addEventListener('resize', function() {
-            // Пересоздание частиц при изменении размера окна
             const particlesContainer = document.getElementById('particles');
             if (particlesContainer) {
                 particlesContainer.innerHTML = '';
-                createParticles();
+                window.searchEngine.createParticles();
             }
         });
     </script>
