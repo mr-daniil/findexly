@@ -532,6 +532,207 @@
             color: var(--text-primary);
         }
 
+        .widgets-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 24px;
+            margin: 60px 0;
+        }
+
+        .widget {
+            background: var(--bg-card);
+            border-radius: 20px;
+            padding: 28px;
+            box-shadow: var(--shadow);
+            border: 1px solid var(--border);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .widget::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: var(--gradient);
+            transform: scaleX(0);
+            transition: transform 0.3s;
+        }
+
+        .widget:hover::before {
+            transform: scaleX(1);
+        }
+
+        .widget:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 16px 48px rgba(0, 0, 0, 0.5);
+        }
+
+        .widget-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+
+        .widget-icon {
+            width: 48px;
+            height: 48px;
+            background: var(--gradient);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+        }
+
+        .widget-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .currency-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 0;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .currency-item:last-child {
+            border-bottom: none;
+        }
+
+        .currency-name {
+            color: var(--text-secondary);
+            font-size: 15px;
+        }
+
+        .currency-value {
+            color: var(--text-primary);
+            font-weight: 600;
+            font-size: 16px;
+        }
+
+        .trend-up {
+            color: var(--success);
+        }
+
+        .trend-down {
+            color: var(--error);
+        }
+
+        .about-section {
+            background: var(--bg-secondary);
+            padding: 80px 0;
+            margin: 60px -20px;
+        }
+
+        .about-content {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .about-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 40px;
+            margin-top: 40px;
+        }
+
+        .about-card {
+            background: var(--bg-card);
+            border-radius: 20px;
+            padding: 30px;
+            border: 1px solid var(--border);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .about-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: var(--gradient);
+            transform: scaleX(0);
+            transition: transform 0.3s;
+        }
+
+        .about-card:hover::before {
+            transform: scaleX(1);
+        }
+
+        .about-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow);
+        }
+
+        .about-card h3 {
+            color: var(--accent-primary);
+            margin-bottom: 15px;
+            font-size: 1.3rem;
+        }
+
+        .about-card p {
+            color: var(--text-secondary);
+            line-height: 1.6;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 60px;
+            color: var(--text-primary);
+        }
+
+        .creator-section {
+            text-align: center;
+            padding: 40px 0;
+            border-top: 1px solid var(--border);
+            margin-top: 40px;
+        }
+
+        .creator-info {
+            display: inline-flex;
+            align-items: center;
+            gap: 15px;
+            background: var(--bg-card);
+            padding: 15px 25px;
+            border-radius: 15px;
+            border: 1px solid var(--border);
+        }
+
+        .creator-avatar {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: var(--gradient);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            color: white;
+        }
+
+        .creator-details h4 {
+            color: var(--text-primary);
+            margin-bottom: 5px;
+        }
+
+        .creator-details p {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
         .loading {
             text-align: center;
             color: var(--text-muted);
@@ -597,6 +798,35 @@
                 padding: 16px 50px 16px 20px;
                 font-size: 1rem;
             }
+
+            .widgets-grid {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+
+            .widget {
+                padding: 20px;
+            }
+
+            .about-grid {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+
+            .section-title {
+                font-size: 2rem;
+                margin-bottom: 40px;
+            }
+
+            .about-section {
+                padding: 40px 0;
+                margin: 30px -20px;
+            }
+
+            .creator-info {
+                flex-direction: column;
+                text-align: center;
+            }
         }
 
         @keyframes fadeInUp {
@@ -612,6 +842,29 @@
 
         .animate-fade-in {
             animation: fadeInUp 0.6s ease forwards;
+        }
+
+        body.light-theme {
+            --bg-primary: #f5f7fa;
+            --bg-secondary: #ffffff;
+            --bg-card: #ffffff;
+            --text-primary: #2d3748;
+            --text-secondary: #4a5568;
+            --text-muted: #718096;
+            --border: #e2e8f0;
+            --shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+        }
+
+        .theme-toggle .fa-sun {
+            display: none;
+        }
+
+        .light-theme .theme-toggle .fa-sun {
+            display: block;
+        }
+
+        .light-theme .theme-toggle .fa-moon {
+            display: none;
         }
     </style>
 </head>
@@ -642,6 +895,7 @@
                 </button>
                 <button class="theme-toggle" id="themeToggle" title="Сменить тему">
                     <i class="fas fa-moon"></i>
+                    <i class="fas fa-sun"></i>
                 </button>
             </div>
         </nav>
@@ -676,6 +930,111 @@
                     <div class="results-count" id="results-count"></div>
                 </div>
                 <div id="results-container"></div>
+            </div>
+
+            <!-- ВИДЖЕТЫ -->
+            <div class="widgets-grid">
+                <div class="widget animate-fade-in">
+                    <div class="widget-header">
+                        <div class="widget-icon">
+                            <i class="fas fa-chart-line"></i>
+                        </div>
+                        <h3 class="widget-title">Курсы валют</h3>
+                    </div>
+                    <div class="currency-item">
+                        <span class="currency-name">USD / RUB</span>
+                        <span class="currency-value">80,5037 ₽ <span class="trend-up">↑0.2%</span></span>
+                    </div>
+                    <div class="currency-item">
+                        <span class="currency-name">EUR / RUB</span>
+                        <span class="currency-value">93,3894 ₽ <span class="trend-down">↓0.1%</span></span>
+                    </div>
+                    <div class="currency-item">
+                        <span class="currency-name">CNY / RUB</span>
+                        <span class="currency-value">11,2345 ₽ <span class="trend-up">↑0.3%</span></span>
+                    </div>
+                </div>
+
+                <div class="widget animate-fade-in">
+                    <div class="widget-header">
+                        <div class="widget-icon">
+                            <i class="fas fa-cloud-sun"></i>
+                        </div>
+                        <h3 class="widget-title">Погода в мире</h3>
+                    </div>
+                    <div class="currency-item">
+                        <span class="currency-name">Москва</span>
+                        <span class="currency-value">+3°C <i class="fas fa-cloud"></i></span>
+                    </div>
+                    <div class="currency-item">
+                        <span class="currency-name">Нью-Йорк</span>
+                        <span class="currency-value">+15°C <i class="fas fa-sun"></i></span>
+                    </div>
+                    <div class="currency-item">
+                        <span class="currency-name">Токио</span>
+                        <span class="currency-value">+10°C <i class="fas fa-cloud-rain"></i></span>
+                    </div>
+                </div>
+
+                <div class="widget animate-fade-in">
+                    <div class="widget-header">
+                        <div class="widget-icon">
+                            <i class="fas fa-bolt"></i>
+                        </div>
+                        <h3 class="widget-title">Быстрый доступ</h3>
+                    </div>
+                    <div class="currency-item">
+                        <span class="currency-name">Популярные запросы</span>
+                        <span class="currency-value"><i class="fas fa-fire"></i></span>
+                    </div>
+                    <div class="currency-item">
+                        <span class="currency-name">История поиска</span>
+                        <span class="currency-value"><i class="fas fa-history"></i></span>
+                    </div>
+                    <div class="currency-item">
+                        <span class="currency-name">Избранное</span>
+                        <span class="currency-value"><i class="fas fa-star"></i></span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- СЕКЦИЯ О FINDEXLY -->
+        <section class="about-section">
+            <div class="about-content">
+                <h2 class="section-title">О Findexly</h2>
+                <div class="about-grid">
+                    <div class="about-card animate-fade-in">
+                        <h3>Умный поиск с ИИ</h3>
+                        <p>Наш искусственный интеллект понимает естественный язык и контекст запросов. Пишите как думаете - ИИ поймет что вы имеете в виду.</p>
+                    </div>
+                    
+                    <div class="about-card animate-fade-in">
+                        <h3>Мгновенные ответы</h3>
+                        <p>Получайте точные ответы на вопросы без необходимости переходить по ссылкам. ИИ анализирует информацию и выдает готовый ответ.</p>
+                    </div>
+                    
+                    <div class="about-card animate-fade-in">
+                        <h3>Все в одном</h3>
+                        <p>Погода, курсы валют, новости, расчеты - все доступно через один поиск. Не нужно переключаться между приложениями.</p>
+                    </div>
+                    
+                    <div class="about-card animate-fade-in">
+                        <h3>Технологии будущего</h3>
+                        <p>Используем передовые алгоритмы машинного обучения и обработки естественного языка для максимально точных результатов.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- СОЗДАТЕЛЬ -->
+        <section class="creator-section">
+            <div class="creator-info">
+                <div class="creator-avatar">ДЖ</div>
+                <div class="creator-details">
+                    <h4>Даниил Жарков</h4>
+                    <p>Создатель Findexly • 2025</p>
+                </div>
             </div>
         </section>
     </div>
@@ -777,6 +1136,15 @@
                     url: 'https://time.is/',
                     description: `🕐 Московское время: ${new Date().toLocaleTimeString('ru-RU')}`
                 }
+            },
+            'кто создал findexly': {
+                type: 'creator',
+                response: 'О создателе Findexly:',
+                data: {
+                    title: 'Создатель Findexly',
+                    url: '#',
+                    description: 'Findexly создан Даниилом Жарковым как современная поисковая система с использованием технологий искусственного интеллекта для быстрого и точного поиска информации.'
+                }
             }
         };
 
@@ -830,6 +1198,10 @@
                     return knowledgeBase['время'];
                 }
 
+                if (normalizedQuery.includes('создал') || normalizedQuery.includes('создатель') || normalizedQuery.includes('даниил')) {
+                    return knowledgeBase['кто создал findexly'];
+                }
+
                 return this.createWebSearchResult(query);
             }
 
@@ -856,6 +1228,7 @@
                     'weather': `Погодные условия:`,
                     'news': `Свежие новости:`,
                     'time': `Текущее время:`,
+                    'creator': `Информация о создателе:`,
                     'default': `Вот что я нашел по запросу "${query}":`
                 };
 
@@ -875,6 +1248,7 @@
                 this.setupEventListeners();
                 this.createParticles();
                 this.setupVoiceSearch();
+                this.setupThemeToggle();
             }
 
             setupEventListeners() {
@@ -914,6 +1288,19 @@
                     if (e.key === 'Enter') {
                         this.performSearch();
                     }
+                });
+
+                // Плавная прокрутка по навигации
+                document.querySelectorAll('.nav-link[href^="#"]').forEach(link => {
+                    link.addEventListener('click', function(e) {
+                        e.preventDefault();
+                        const targetId = this.getAttribute('href').substring(1);
+                        const targetElement = document.getElementById(targetId);
+                        
+                        if (targetElement) {
+                            targetElement.scrollIntoView({ behavior: 'smooth' });
+                        }
+                    });
                 });
             }
 
@@ -1097,6 +1484,21 @@
                     voiceSearchBtn.classList.remove('listening');
                     voiceIndicator.style.display = 'none';
                 };
+            }
+
+            setupThemeToggle() {
+                const themeToggle = document.getElementById('themeToggle');
+                const currentTheme = localStorage.getItem('theme') || 'dark';
+                
+                if (currentTheme === 'light') {
+                    document.body.classList.add('light-theme');
+                }
+                
+                themeToggle.addEventListener('click', () => {
+                    document.body.classList.toggle('light-theme');
+                    const theme = document.body.classList.contains('light-theme') ? 'light' : 'dark';
+                    localStorage.setItem('theme', theme);
+                });
             }
         }
 
